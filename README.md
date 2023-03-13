@@ -1,7 +1,7 @@
 # DevOps_Projects
 This repository is dedicated to host codes and documents of projects completed in Darey.io Project Based Learning Program
 
-![Program Logo](https://github.com/doutimi3/DevOps_Projects/blob/main/img/logo.png)
+![Program Logo](https://github.com/doutimi3/DevOps_Projects/blob/a6741e2825d60cf455dcf9417d8d6fb38d6e8208/img/logo.png)
 
 ## About this Program
 This program focus on helping students gain hands-on DevOps skills through project based learning, one on one mentoring and guidance from industry captains, working professionals, and peer to peer support.
