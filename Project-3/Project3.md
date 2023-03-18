@@ -67,6 +67,7 @@ cd Todo
 npm init
 ```
 After running the npm init command, press Enter several times to accept the default values, then accept to write out the package.json file by typing yes.
+
 ![](https://miro.medium.com/v2/resize:fit:1278/format:webp/1*dnoQ9LZeKt6-vFe4bsOCYQ.png)
 
 __Install ExpressJS__
@@ -121,6 +122,7 @@ aws ec2 authorize-security-group-ingress \
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*bJx_KwvDsl9H0ZbR-e8dhA.png)
 
 Access the app via http protocol on your browser: http://35.178.168.50:5000/
+
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*R7i15336KHNdcHOMO5wpIg.png)
 
 __Configure Routes__
@@ -230,6 +232,7 @@ module.exports = router;
 ```
 Overall, this code defines the routes for handling GET, POST, and DELETE requests for a “todo” resource in an Express app and interacts with the “todo” collection in a MongoDB database using the Mongoose library.
 
+
 __MongoDB Database__
 
 We’ll need a database to store our data. We will make use of mLab for this. mLab offers MongoDB database as a service (DBaaS), so to make things easier, sign up for a free shared clusters account, which is appropriate for our use case. Selecting Amazon as the cloud provider and a region near you.
@@ -237,9 +240,11 @@ We’ll need a database to store our data. We will make use of mLab for this. mL
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*NeArOUm53m90p8tKArgM4A.png)
 
 Create a new user, enter username and password
+
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*XbHXXsIWsBaAycN4Vhu8uw.png)
 
 Add your system IP to both the cloud and local environment, then finish and close.
+
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*ldnUOqvSOgLxEVEsNymuTg.png)
 
 Allow access to the MongoDB database from anywhere (Not secure, but it is ideal for testing)
