@@ -8,6 +8,8 @@ declare -a dept
 declare -a passwd
 declare -a pubkey
 
+CurrentUser=$(id -u -n)
+
 # Read the first line and save it as the header
 read -r header < "$my_input"
 
@@ -34,13 +36,15 @@ do
         echo "User ${user[$index]} already exists"
     else
         # Create user with default home folder
-        if sudo useradd -g "${dept[$index]}" \
-                        -d "/home/${user[$index]}" \
+        if sudo useradd -d "/home/${user[$index]}" \
                         -m \
                         -s "/bin/bash" \
+                        -c "$fname" "$lname"
                         -p "$(echo "${passwd[$index]}" | openssl passwd -1 -stdin)" \
-                        "${user[$index]}"; then
+                        "${user[$index]}" && \
+                        sudo usermod -aG "${dept[$index]}" "${user[$index]}"; then
             echo "User ${user[$index]} created"
+            
 
             # Create .ssh folder if it does not exist
             if [ ! -d "/home/${user[$index]}/.ssh" ]; then
@@ -51,19 +55,13 @@ do
 
             # Create authorized_keys file if it does not exist and add the public key
             if [ ! -f "/home/${user[$index]}/.ssh/authorized_keys" ]; then
-                sudo touch "/home/${user[$index]}/.ssh/authorized_keys"
+                sudo cp -r "/home/$CurrentUser/.ssh/authorized_keys" "/home/${user[$index]}/.ssh/"
                 sudo chmod 600 "/home/${user[$index]}/.ssh/authorized_keys"
                 sudo chown "${user[$index]}:${dept[$index]}" "/home/${user[$index]}/.ssh/authorized_keys"
             fi
 
-            # Append the public key to authorized_keys file
-            echo "${pubkey[$index]}" | sudo tee -a "/home/${user[$index]}/.ssh/authorized_keys" >/dev/null
         else
             echo "Failed to create user ${user[$index]}"
         fi
     fi
 done
-
-
-
-
