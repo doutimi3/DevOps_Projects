@@ -4,9 +4,11 @@ In this project, I will be showing a guide on how to do shell scripting in linux
 I will be using an ubuntu server launched and managed using vagrant on vmware_fusion so I will include some details on how I spinned up this ubuntu server but the scripts in this repo will work in any environment.
 
 __Prerequisites__
+1. Knowledge of basic linux commands
+1. Setup vagrant and vmware fusion (It does not matter if you use vagrant or not, you can use other options like utm, virtualbox etc. to provision your server)
 
-TBC
 
+__Step by Step Guide__
 
 __1. Spin up the ubuntu server using Vagrant__
 Create a new directory to contain files for this project, change to this directory, create a file called "Vagrantfile" in the directory and paste the text below into this Vagrantfile.
@@ -192,23 +194,23 @@ Verify that the new group "developers" and all users where created, added to thi
 ```SHELL
 sudo less /etc/passwd
  ```
-![picture](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/groupcreated.png) 
+![picture](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/VerifyUserCreated.png)
 
 Verify that the group "developers" was created and show all the users in this group
 
 ```SHELL
 sudo cat /etc/group
 ```
-![picture](DevOps_Projects/AUX-1-ShellScripting/img/groupcreated.png)
+![picture](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/groupcreated.png)
 
 Verify that User Home directory as setup
-![](DevOps_Projects/AUX-1-ShellScripting/img/VerifyDirSetup.png)
+![](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/VerifyDirSetup.png)
 
 Login using any of the userid
 ```SHELL
 sudo su - wjoseph
 ```
-![](DevOps_Projects/AUX-1-ShellScripting/img/loggeduser.png)
+![](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/loggeduser.png)
 
 Next, I will be accessing this server remotely using two randow users. Recall that we have already copied the public key to each users home directory and the private key is in the remote server. 
 
@@ -225,8 +227,9 @@ To get the ip address of the remote server run the following command on the remo
 ```
 ifconfig
 ```
-![](DevOps_Projects/AUX-1-ShellScripting/img/RemoteUserAccess.png)
-![](DevOps_Projects/AUX-1-ShellScripting/img/user2RemoteAccess.png)
+![picture](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/RemoteUserAccess.png)
+
+![picture](https://github.com/doutimi3/DevOps_Projects/blob/main/AUX-1-ShellScripting/img/user2RemoteAccess.png)
 
 __CONCLUSION__
 
