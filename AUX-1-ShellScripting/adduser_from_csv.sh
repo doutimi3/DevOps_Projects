@@ -6,7 +6,6 @@ declare -a lname
 declare -a user
 declare -a dept
 declare -a passwd
-declare -a pubkey
 
 CurrentUser=$(id -u -n)
 
@@ -28,7 +27,13 @@ for index in "${!user[@]}";
 do
     # Check if group exists, if not create it
     if ! getent group "${dept[$index]}" >/dev/null; then
-        sudo groupadd "${dept[$index]}"
+        if sudo groupadd "${dept[$index]}"; then
+            echo "Group ${dept[$index]} created"
+        else
+            echo "Failed to create group ${dept[$index]}"
+        fi
+    else
+        echo "Group ${dept[$index]} already exists"
     fi
 
     # Check if user already exists
@@ -39,12 +44,12 @@ do
         if sudo useradd -d "/home/${user[$index]}" \
                         -m \
                         -s "/bin/bash" \
-                        -c "$fname" "$lname"
+                        -c "${fname[$index]} ${lname[$index]}" \
                         -p "$(echo "${passwd[$index]}" | openssl passwd -1 -stdin)" \
                         "${user[$index]}" && \
                         sudo usermod -aG "${dept[$index]}" "${user[$index]}"; then
             echo "User ${user[$index]} created"
-            
+
 
             # Create .ssh folder if it does not exist
             if [ ! -d "/home/${user[$index]}/.ssh" ]; then
