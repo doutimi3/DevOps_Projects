@@ -1,0 +1,7 @@
+*.env
+*.pem
+Note.txt
+*.docx
+*txt
+*.mov
+linux/
