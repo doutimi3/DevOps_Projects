@@ -1,3 +1,5 @@
+# Load Balancing Solution using NGINX and SSL/TLS
+
 In project 8, we configured a load balancer uisng apache2 to distribute the traffic between the web servers to ensure horixontal scalability. In this project, we will configure an Nginx load balancer solution. 
 
 Both Nginx and Apache are powerful and widely used web servers, but they have different strengths and weaknesses. Nginx is often preferred over Apache as a load balancer due to its efficiency, simplicity, and ability to handle heavy loads and high concurrency. Its event-driven architecture makes it ideal for use in high-traffic websites or applications. It also has excellent support for SSL/TLS termination and is known for its ability to perform reverse proxying and load balancing. While Apache can also act as a reverse proxy and load balancer, Nginx is generally considered more efficient and scalable for these tasks.
