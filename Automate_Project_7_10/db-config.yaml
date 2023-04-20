@@ -1,0 +1,82 @@
+---
+- name: Update and upgrade Ubuntu server, install MySQL, and set root password
+  hosts: dbgroup
+  become: yes
+  vars_files:
+    - ansible_vars.yaml
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      apt:
+        upgrade: yes
+
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Install PyMySQL
+      become: yes
+      apt:
+        name: python3-pymysql
+        state: present
+
+    - name: Set MySQL root password
+      mysql_user:
+        name: root
+        password: "{{ db_root }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: root
+        login_password: "{{ db_root }}"
+        host_all: yes
+        priv: "*.*:ALL,GRANT"
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
+    - name: Create tooling database
+      mysql_db:
+        name: tooling
+        state: present
+        login_user: root
+        login_password: "{{ db_root }}"
+
+    - name: Create webaccess user
+      mysql_user:
+        name: webaccess
+        password: "{{ webaccess_password }}"
+        host: '%'
+        priv: "tooling.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ db_root }}"
+
+    - name: Flush privileges
+      mysql_user:
+        name: ''
+        host_all: yes
+        priv: '*.*:GRANT'
+        state: absent
+        login_user: root
+        login_password: "{{ db_root }}"
+
+    - name: Copy mysql.cnf file to remote machine
+      copy:
+        src: "mysqld.cnf"
+        dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+        mode: '0644'
+        backup: yes
+      become: true
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted

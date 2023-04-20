@@ -1,0 +1,146 @@
+---
+- name: Configure NFS Server
+  hosts: nfsgrp
+  become: true
+
+  tasks:
+    - name: Install expect package
+      yum:
+        name: expect
+        state: present
+
+    - name: Install pexpect package
+      yum:
+        name: python3-pexpect
+        state: present
+
+    - name: Install LVM2 package
+      yum:
+        name: lvm2
+        state: present
+
+
+    - name: Create new partitions
+      parted:
+        device: /dev/{{ item }}
+        number: 1
+        state: present
+        part_start: 2MiB
+        part_end: 100%
+      loop:
+        - xvdb
+        - xvdc
+        - xvdd
+
+    - name: Create volume group
+      lvg:
+        vg: nfsdata-vg
+        pvs:
+          - /dev/xvdb1
+          - /dev/xvdc1
+          - /dev/xvdd1
+
+    - name: Create physical volumes
+      lvol:
+        vg: nfsdata-vg
+        lv: "{{ item }}-lv"
+        size: 9g
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Add logical volumes to volume group
+      lvol:
+        vg: nfsdata-vg
+        lv: "{{ item }}-lv"
+        pvs: "/dev/{{ item[0:3] }}1"
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Format logical volumes to xfs format
+      filesystem:
+        fstype: xfs
+        dev: "/dev/nfsdata-vg/{{ item }}-lv"
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Create mount points for logical volumes
+      file:
+        path: "/mnt/{{ item }}"
+        state: directory
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Mount logical volumes
+      mount:
+        path: "/mnt/{{ item }}"
+        src: "/dev/nfsdata-vg/{{ item }}-lv"
+        fstype: xfs
+        state: mounted
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Update system packages
+      yum:
+        name: '*'
+        state: latest
+      become: yes
+
+    - name: Install NFS utilities
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: Start NFS server
+      service:
+        name: nfs-server
+        state: started
+        enabled: yes
+
+    - name: Update exports file
+      copy:
+        src: exports
+        dest: /etc/exports
+      notify: Restart NFS
+
+  handlers:
+    - name: Restart NFS
+      service:
+        name: nfs-server
+        state: restarted
+
+    - name: Set ownership for mount points
+      file:
+        path: "/mnt/{{ item }}"
+        owner: nobody
+        group: nobody
+        recurse: yes
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Set permissions for mount points
+      file:
+        path: "/mnt/{{ item }}"
+        mode: '0777'
+        recurse: yes
+      loop:
+        - apps
+        - logs
+        - opt
+
+    - name: Restart NFS server after ownership and permissions have been set
+      service:
+        name: nfs-server
+        state: restarted
+

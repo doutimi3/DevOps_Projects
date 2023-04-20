@@ -1,0 +1,7 @@
+ansible_vars.yaml
+.env
+archive_name.tar.gz
+*.pem
+exports
+mysqld.cnf
+/backup

@@ -1,0 +1,70 @@
+---
+- name: Update packages and install nfs-utils and nfs4-acl-tools
+  hosts: webgroup
+  become: true
+  gather_facts: true
+  vars_files:
+    - ansible_vars.yaml
+
+  tasks:
+    # - name: Update all packages
+    #   yum:
+    #     name: '*'
+    #     state: latest
+
+    - name: Install nfs-utils and nfs4-acl-tools
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - nfs-utils
+        - nfs4-acl-tools
+
+    - name: Enable and start NFS server service
+      systemd:
+        name: nfs-server
+        state: started
+        enabled: yes
+
+    - name: Create directory /var/www
+      file:
+        path: /var/www
+        state: directory
+        mode: "0755"
+
+    - name: Mount NFS share
+      mount:
+        path: /var/www
+        src: "{{ nfs_private_ip }}:/mnt/apps"
+        fstype: nfs
+        opts: rw,nosuid
+        state: mounted
+
+    - name: Copy setup_webserver.sh to remote server
+      copy:
+        src: setup_webserver.sh
+        dest: ~/setup_webserver.sh
+        mode: "0755"
+
+    - name: Run setup_webserver.sh on remote server
+      shell: ~/setup_webserver.sh
+
+    - name: Mount Log to NFS share
+      mount:
+        path: /var/log/httpd
+        src: "{{ nfs_private_ip }}:/mnt/logs"
+        fstype: nfs
+        opts: rw,nosuid
+        state: mounted
+
+    - name: Copy final_setup.sh to remote server
+      copy:
+        src: final_webserver_setup.sh
+        dest: ~/final_webserver_setup.sh
+        mode: "0755"
+
+    - name: Run final_setup.sh on remote server
+      shell: ~/final_webserver_setup.sh
+
+
+
