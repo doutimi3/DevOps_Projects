@@ -1,7 +1,7 @@
-nfs-server ansible_host=<public ip>
-db-server ansible_host=<public ip>
-web-server1 ansible_host=<public ip>
-web-server2 ansible_host=<public ip>
+nfs-server ansible_host=3.10.211.176
+db-server ansible_host=35.178.168.193
+web-server1 ansible_host=3.10.54.8
+web-server2 ansible_host=13.42.18.100
 
 [nfsgrp]
 nfs-server 

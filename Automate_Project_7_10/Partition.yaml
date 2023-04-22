@@ -19,7 +19,6 @@
         name: lvm2
         state: present
 
-
     - name: Create new partitions
       parted:
         device: /dev/{{ item }}
@@ -91,7 +90,7 @@
 
     - name: Update system packages
       yum:
-        name: '*'
+        name: "*"
         state: latest
       become: yes
 
@@ -132,7 +131,7 @@
     - name: Set permissions for mount points
       file:
         path: "/mnt/{{ item }}"
-        mode: '0777'
+        mode: "0777"
         recurse: yes
       loop:
         - apps
@@ -143,4 +142,3 @@
       service:
         name: nfs-server
         state: restarted
-

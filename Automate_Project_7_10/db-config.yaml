@@ -20,7 +20,6 @@
         state: present
 
     - name: Install PyMySQL
-      become: yes
       apt:
         name: python3-pymysql
         state: present
@@ -53,7 +52,7 @@
       mysql_user:
         name: webaccess
         password: "{{ webaccess_password }}"
-        host: '%'
+        host: "%"
         priv: "tooling.*:ALL"
         state: present
         login_user: root
@@ -61,9 +60,9 @@
 
     - name: Flush privileges
       mysql_user:
-        name: ''
+        name: ""
         host_all: yes
-        priv: '*.*:GRANT'
+        priv: "*.*:GRANT"
         state: absent
         login_user: root
         login_password: "{{ db_root }}"
@@ -72,7 +71,7 @@
       copy:
         src: "mysqld.cnf"
         dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
-        mode: '0644'
+        mode: "0644"
         backup: yes
       become: true
 
