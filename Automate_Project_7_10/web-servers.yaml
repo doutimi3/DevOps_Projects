@@ -7,10 +7,10 @@
     - ansible_vars.yaml
 
   tasks:
-    # - name: Update all packages
-    #   yum:
-    #     name: '*'
-    #     state: latest
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
 
     - name: Install nfs-utils and nfs4-acl-tools
       yum:
@@ -65,6 +65,3 @@
 
     - name: Run final_setup.sh on remote server
       shell: ~/final_webserver_setup.sh
-
-
-
