@@ -171,13 +171,7 @@ If you want to apply some particular pattern to define which files to send – [
 Ensure the jenkins user have the required permissions to write to the remote directory. To be sure, grant this permission again
 
 ```SHELL
-sudo chown -R nobody: /mnt/apps
-sudo chown -R nobody: /mnt/logs
-sudo chown -R nobody: /mnt/opt
-
-sudo chmod -R 777 /mnt/apps
-sudo chmod -R 777 /mnt/logs
-sudo chmod -R 777 /mnt/opt
+sudo chown -R nobody: /mnt
 sudo chmod -R 777 /mnt
 ```
 
