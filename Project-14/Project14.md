@@ -1798,7 +1798,7 @@ To deploy to all environments,
 
 **Credit**
 
-[Darey.io DevOps master Class](https://www.darey.io/)
+[Darey.io DevOps master Class](https://www.darey.io/) (Special thanks to David for his help)
 
 
 
